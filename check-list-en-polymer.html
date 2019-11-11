@@ -1,0 +1,56 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="check-list-en-polymer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Tareas para entrar con BBVA</h2>
+    <input type="text" id="single-task" placeholder="Ingrese su tarea" >
+    <button on-click='_saveToDo'>Aceptar</button>
+    
+    <template is="dom-repeat" items="[[tasks]]" as="task" index-as="index">
+      <p>[[task.name]] <input type="checkbox" on-change="_checkBox"> </p>
+    </template>
+
+  </template>
+
+  <script>
+    /**
+     * `check-list-en-polymer`
+     * Check list
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class CheckListEnPolymer extends Polymer.Element {
+      static get is() { return 'check-list-en-polymer'; }
+      static get properties() {
+        return {
+
+          tasks: {
+            type: Array,
+            value: []
+          }
+
+        };
+      }
+      _saveToDo(){
+        const value = this.shadowRoot.querySelector('#single-task').value;
+        this.tasks = [...this.tasks, {name: value, completed: false}];
+      }
+
+      _checkBox(event){
+        const checkBox = event.currentTarget;
+        const checked = checkBox.checked;
+        event.model.task.completed = checked;
+        this.tasks = [...this.tasks];
+      }
+    }
+
+    window.customElements.define(CheckListEnPolymer.is, CheckListEnPolymer);
+  </script>
+</dom-module>
